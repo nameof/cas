@@ -1,5 +1,6 @@
 package org.apereo.cas.authentication.principal;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,10 +35,13 @@ public interface Service extends Principal {
      */
     default boolean matches(Service service) {
         try {
-            final String thisUrl = URLDecoder.decode(getId(), StandardCharsets.UTF_8.name());
-            final String serviceUrl = URLDecoder.decode(service.getId(), StandardCharsets.UTF_8.name());
-
+            String thisUrl = URLDecoder.decode(getId(), StandardCharsets.UTF_8.name());
+            String serviceUrl = URLDecoder.decode(service.getId(), StandardCharsets.UTF_8.name());
             LOGGER.trace("Decoded urls and comparing [{}] with [{}]", thisUrl, serviceUrl);
+
+            //不对比URL参数
+            thisUrl = new URIBuilder(thisUrl).removeQuery().toString();
+            serviceUrl = new URIBuilder(serviceUrl).removeQuery().toString();
             return thisUrl.equalsIgnoreCase(serviceUrl);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);

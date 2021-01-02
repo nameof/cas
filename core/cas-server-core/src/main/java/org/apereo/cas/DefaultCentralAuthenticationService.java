@@ -301,11 +301,11 @@ public class DefaultCentralAuthenticationService extends AbstractCentralAuthenti
                     throw new InvalidTicketException(serviceTicketId);
                 }
 
-                /*if (!serviceTicket.isValidFor(resolvedService)) {
+                if (!serviceTicket.isValidFor(resolvedService)) {
                     LOGGER.error("Service ticket [{}] with service [{}] does not match supplied service [{}]",
                         serviceTicketId, serviceTicket.getService().getId(), resolvedService);
                     throw new UnrecognizableServiceForServiceTicketValidationException(serviceTicket.getService());
-                }*/
+                }
             }
 
             final RegisteredService registeredService = this.servicesManager.findServiceBy(selectedService);
